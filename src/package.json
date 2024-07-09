@@ -2,7 +2,6 @@
   "dependencies": {
     "better-sqlite3": "^11.1.1",
     "node-cron": "github:counting-bot/node-cron",
-    "oceanic.js": "^1.11.0",
-    "rss-parser": "^3.13.0"
+    "oceanic.js": "^1.11.0"
   }
 }

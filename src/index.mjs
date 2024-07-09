@@ -4,6 +4,8 @@ const { discordToken } = await import(process.env.NODE_ENV === "production" ? '/
 import messageCreate from './events/messageCreate.mjs'
 import interactionCreate from './events/interactionCreate.mjs'
 
+import Database from "better-sqlite3";
+
 // create bot clients
 const client = new discordClient({
     "auth": discordToken,
@@ -20,11 +22,9 @@ const client = new discordClient({
 });
 
 
-client.once("ready", () => {
-    // client.application.bulkEditGlobalCommands(discordFileMap.commands.map(file=>file.options))
-    // client.commands = commandArrayToMap(discordFileMap.commands)
-    // client.components = commandArrayToMap(discordFileMap.components)
-})
+client.db = new Database(process.env.NODE_ENV === "production" ? '/config/db.db' : './config/db.db')
+
+
 client.on("ready", () => client.editStatus("dnd"))
 client.on("messageCreate", messageCreate.bind(null, client))
 client.on("interactionCreate", interactionCreate.bind(null, client))
@@ -33,21 +33,3 @@ client.on("interactionCreate", interactionCreate.bind(null, client))
 client.on("error", (err) => console.error("Discord error:", err));
 
 client.connect();
-
-
-
-// const discordCommands = await client.application.getGlobalCommands();
-
-// client.commands = new Map(
-//     commandList.map((command) => {
-//         return [
-//             command.name,
-//             {
-//                 commandFile: command,
-//                 discordInfo: discordCommands.find((discordCommand) => {
-//                     return discordCommand.name === command.name;
-//                 }),
-//             },
-//         ];
-//     }),
-// );
